@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userID   String @id @default(uuid())
+  email    String @unique
+  password String
+  name     String
+  role     Role   @default(USER)
+  posts    Job[]
+
+  @@unique(fields: [email, password], name: "authenticate")
+}
+
+model Job {
+  id                String   @id @default(uuid())
+  title             String
+  dateOfApplication DateTime @default(now())
+  description       String?
+  companyName       String
+  companyAddress    String?
+  link              String?
+  status            Status   @default(APPLYING)
+  author            User     @relation(fields: [authorID], references: [userID])
+  authorID          String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Status {
+  APPLYING
+  INTERVIEWING
+  SENT_OFFER
+  CANCELLED
+  REJECTED
+  HIRED
+}
