@@ -2,6 +2,16 @@ import Card from "@/components/card";
 import { prisma } from "@/db";
 import Image from "next/image";
 
+export type perJob = {
+  jobTitle: string;
+  dateOfApplication: string;
+  description?: string;
+  companyName: string;
+  companyAddress?: string;
+  link?: string;
+  status: string;
+};
+
 const jobList = [
   {
     jobTitle: "Web Developer",
@@ -28,9 +38,24 @@ const jobList = [
   },
 ];
 
-function getJobs() {
-  prisma.job.findMany;
-}
 export default async function Home() {
-  return <main className="dark:text-white dark:bg-zinc-800"></main>;
+  return (
+    <main className="flex flex-col gap-2 px-4 dark:text-white dark:bg-zinc-800">
+      <h1>Your List of Jobs</h1>
+      <ListOfJobs />
+    </main>
+  );
+}
+
+function ListOfJobs() {
+  return (
+    <>
+      {jobList.map((jobDesc, index) => (
+        <Card
+          data={jobDesc}
+          key={index}
+        />
+      ))}
+    </>
+  );
 }

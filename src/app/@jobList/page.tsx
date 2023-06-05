@@ -44,7 +44,7 @@ export default function JobList() {
             },
             index
           ) => (
-            <Card key={index} />
+            <></>
           )
         )}
       </div>
