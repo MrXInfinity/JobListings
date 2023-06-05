@@ -22,7 +22,8 @@ function Searchbar() {
 }
 
 function NavButtons() {
-  const { isThemeDark, toggle: themeToggle } = useTheme();
+  const isThemeDark = useTheme((state) => state.isThemeDark);
+  const themeToggle = useTheme((state) => state.toggle);
 
   return (
     <div className="flex items-center gap-4 ">

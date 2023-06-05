@@ -1,14 +1,15 @@
 "use client";
 
 import useTheme from "@/utils/themeState";
+import { useEffect } from "react";
+import useStore from "@/utils/useStore";
 
 export default function ThemeProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const isThemeDark = useTheme((state) => state.isThemeDark);
+  const isThemeDark = useStore(useTheme, (state) => state.isThemeDark);
 
-  if (isThemeDark) return <div className="dark">{children}</div>;
-  return <div className={``}>{children}</div>;
+  return <div className={`${isThemeDark ? "dark" : ""}`}>{children}</div>;
 }
