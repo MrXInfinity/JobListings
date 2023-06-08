@@ -3,7 +3,7 @@ import Card from "@/components/card";
 import { prisma } from "@/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import authOptions from "./api/auth/[...nextauth]/route";
 import { JobDataType } from "@/utils/newNote";
 
 export default async function Home() {
