@@ -18,15 +18,17 @@ export default async function Home() {
     redirect("/signin");
   }
   return (
-    <main className="flex flex-col gap-2 px-4 dark:text-white dark:bg-zinc-800">
+    <main className=" flex w-full flex-col gap-2 p-4 px-4 dark:bg-zinc-800 dark:text-white">
       <h1>Your List of Jobs</h1>
 
-      {data.map((jobDesc, index) => (
-        <Card
-          data={jobDesc}
-          key={index}
-        />
-      ))}
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(100px,_1fr))] gap-4">
+        {data.map((jobDesc, index) => (
+          <Card
+            data={jobDesc}
+            key={index}
+          />
+        ))}
+      </div>
       <Modal />
     </main>
   );

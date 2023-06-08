@@ -1,4 +1,4 @@
-import Nav from "@/components/nav";
+import Nav from "@/components/Nav";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import ThemeProvider from "@/components/ThemeProvider";
@@ -20,12 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider>
-          <AuthProvider>
+        <AuthProvider>
+          <ThemeProvider>
             <Nav />
-            {children}
-          </AuthProvider>
-        </ThemeProvider>
+            <div className="flex flex-1 justify-stretch">{children}</div>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

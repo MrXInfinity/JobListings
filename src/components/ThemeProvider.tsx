@@ -11,5 +11,13 @@ export default function ThemeProvider({
 }) {
   const isThemeDark = useStore(useTheme, (state) => state.isThemeDark);
 
-  return <div className={`${isThemeDark ? "dark" : ""}`}>{children}</div>;
+  return (
+    <div
+      className={`${
+        isThemeDark ? "dark" : ""
+      } flex h-screen w-screen flex-col `}
+    >
+      {children}
+    </div>
+  );
 }

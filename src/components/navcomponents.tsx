@@ -12,13 +12,13 @@ import NewNote from "@/utils/newNote";
 import useModalState from "@/utils/modalState";
 
 function NavComponents() {
-  const data = useSession();
+  const { status } = useSession();
 
   return (
     <>
       <Searchbar />
       <div className="flex items-center gap-4 ">
-        <NewButton />
+        {status === "authenticated" && <NewButton />}
         <ThemeButton />
         <AccountInfo />
       </div>
@@ -46,11 +46,11 @@ function NewButton() {
   };
   return (
     <div
-      className="flex cursor-pointer items-center gap-2 border-black px-2 py-1 dark:border-white sm:border-2"
+      className="button_transition flex cursor-pointer items-center gap-1 border-2 border-black px-2 py-1 hover:border-blue-400 hover:text-blue-400 dark:border-white dark:hover:border-blue-400 "
       onClick={() => newJobClick()}
     >
       <PlusIcon className="h-5 w-5" />
-      <h1 className="hidden shrink-0 sm:block">New Job</h1>
+      <h1 className="hidden shrink-0 sm:block">New</h1>
     </div>
   );
 }
@@ -82,7 +82,7 @@ function AccountInfo() {
         className="flex"
         onClick={() => signOut()}
       >
-        Welcome, {data?.user?.name?.split(" ")[0][0]}
+        Hi, {data?.user?.name?.split(" ")[0][0]}
         {data?.user?.name?.split(" ")[1][0]}
       </div>
     );
