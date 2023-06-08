@@ -1,8 +1,8 @@
-import Nav from "@/components/Nav";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import ThemeProvider from "@/components/ThemeProvider";
 import AuthProvider from "@/components/AuthProvider";
+import Navigation from "@/components/Navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <ThemeProvider>
-            <Nav />
+            <Navigation />
             <div className="flex flex-1 justify-stretch">{children}</div>
           </ThemeProvider>
         </AuthProvider>
