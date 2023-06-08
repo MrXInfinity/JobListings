@@ -1,4 +1,4 @@
-import NavComponents from "./NavComponents";
+import NavComponents from "./NavComponentss";
 
 export default function Navigation() {
   return (
