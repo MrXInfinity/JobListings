@@ -1,5 +1,6 @@
 "use client";
 
+import useModalState from "@/utils/modalState";
 import useTheme from "@/utils/themeState";
 import {
   MagnifyingGlassIcon,
@@ -7,9 +8,7 @@ import {
   PlusIcon,
   SunIcon,
 } from "@heroicons/react/24/solid";
-import { useSession, signOut } from "next-auth/react";
-import NewNote from "@/utils/newNote";
-import useModalState from "@/utils/modalState";
+import { signOut, useSession } from "next-auth/react";
 
 function NavComponents() {
   const { status } = useSession();

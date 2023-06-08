@@ -3,8 +3,7 @@ import Card from "@/components/card";
 import { prisma } from "@/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import authOptions from "./api/auth/[...nextauth]/route";
-import { JobDataType } from "@/utils/newNote";
+import authOptions from "@/utils/authOptions";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
