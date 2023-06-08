@@ -5,9 +5,13 @@ import NewNote, { JobDataType, statusTypes } from "@/utils/newNote";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
 import { useSession } from "next-auth/react";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 
 export default function Modal() {
   const { isModalOpen, modalContent, closeModal } = useModalState();
@@ -26,13 +30,14 @@ export default function Modal() {
             }}
           >
             <motion.div
-              className="relative flex w-full max-w-xl flex-col justify-center gap-4 bg-white  p-8 dark:bg-zinc-800"
+              layout
+              className="relative flex w-full max-w-xl flex-col justify-center gap-2 bg-white px-8 py-6 dark:bg-zinc-800"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <h1 className="text-lg lg:text-xl">
+              <h1 className="font-semibold lg:text-lg">
                 {modalContent === "addInfo" && "New Job Application"}
                 {modalContent === "updateInfo" && "Update Job Application"}
                 {modalContent === "displayInfo" && ""}
@@ -41,7 +46,7 @@ export default function Modal() {
                 className="absolute right-8 top-8 flex cursor-pointer"
                 onClick={() => closeModal()}
               >
-                <XMarkIcon className="h-6 w-6 " />
+                <XMarkIcon className="button_transition h-6 w-6 p-0 hover:text-blue-400" />
               </div>
 
               {modalContent === "updateInfo" ||
@@ -59,7 +64,6 @@ function SetInfoContent() {
     register,
     setValue,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<JobDataType>({
     defaultValues: {
@@ -74,13 +78,17 @@ function SetInfoContent() {
   });
 
   const [isPending, startTransition] = useTransition();
+  const [isOptionalOpen, setIsOptionalOpen] = useState(false);
   const session = useSession();
 
-  const formInputs = [
+  const requiredFormInputs = [
     ["title", "Title"],
     ["dateOfApplication", "Application Date"],
-    ["description", "Description"],
     ["companyName", "Company Name"],
+  ];
+
+  const optionalFormInputs = [
+    ["description", "Description"],
     ["companyAddress", "Company Address"],
     ["link", "Link"],
   ];
@@ -94,31 +102,39 @@ function SetInfoContent() {
     HIRED: "Accepted the Position",
   };
 
-  const isThisInputRequired = (val: string) =>
-    val === "title" || val === "dateOfApplication" || val === "companyName";
-
   const onSubmit = handleSubmit((data) => {
     startTransition(() => {
-      NewNote(data, session.data?.user?.name!, session.data?.user?.email!);
+      if (isOptionalOpen) {
+        NewNote(data, session.data?.user?.name!, session.data?.user?.email!);
+      } else {
+        const { title, companyName, dateOfApplication, status } = data;
+        NewNote(
+          {
+            title,
+            companyName,
+            dateOfApplication,
+            status,
+          },
+          session.data?.user?.name!,
+          session.data?.user?.email!
+        );
+      }
     });
   });
 
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-col gap-6"
+      className="flex flex-col gap-2"
     >
       <div className="flex flex-col gap-2">
-        {formInputs.map(([value, label], index) => (
+        {requiredFormInputs.map(([value, label], index) => (
           <div
             className="flex flex-col"
             key={index}
           >
             <div className="flex justify-between">
-              <label className="capitalize opacity-90">
-                {isThisInputRequired(value) ? `${label}*` : label}
-              </label>
-
+              <label className="capitalize opacity-90">{label}*</label>
               {errors[value as keyof JobDataType] && (
                 <p className="text-red-500">
                   {
@@ -128,16 +144,12 @@ function SetInfoContent() {
                 </p>
               )}
             </div>
-
             <input
               type={value === "dateOfApplication" ? "date" : "text"}
-              className="border-2 border-black bg-transparent p-2 dark:border-white"
-              required={isThisInputRequired(value)}
+              className="border-2 border-black bg-transparent p-2 outline-blue-400 dark:border-white"
+              required
               {...register(value as any, {
-                required: {
-                  value: isThisInputRequired(value),
-                  message: "This field is required!",
-                },
+                required: "This field is required!",
               })}
             />
           </div>
@@ -152,7 +164,7 @@ function SetInfoContent() {
           </div>
 
           <select
-            className="border-2 border-black bg-transparent p-2 dark:border-white"
+            className="border-2 border-black bg-transparent p-2 outline-blue-400 dark:border-white"
             onChange={(e) =>
               setValue("status", e.currentTarget.value as statusTypes)
             }
@@ -169,13 +181,86 @@ function SetInfoContent() {
             ))}
           </select>
         </div>
+        <AnimatePresence initial={false}>
+          {isOptionalOpen && (
+            <motion.div
+              className="flex flex-col gap-2"
+              initial="hidden"
+              animate="open"
+              exit="hidden"
+              variants={{
+                open: {
+                  height: "auto",
+                  transition: {
+                    delayChildren: 0.15,
+                  },
+                },
+                hidden: {
+                  height: 0,
+                  transition: {
+                    delay: 0.15,
+                  },
+                },
+              }}
+              transition={{
+                duration: 1,
+                ease: "easeInOut",
+              }}
+            >
+              {optionalFormInputs.map(([value, label], index) => (
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: -20 },
+                    open: { opacity: 1, y: 0 },
+                  }}
+                  className="flex flex-col"
+                  key={index}
+                >
+                  <div className="flex justify-between">
+                    <label className="capitalize opacity-90">{label}</label>
+                    {errors[value as keyof JobDataType] && (
+                      <p className="text-red-500">
+                        {
+                          errors[value as keyof JobDataType]
+                            ?.message as React.ReactNode
+                        }
+                      </p>
+                    )}
+                  </div>
+
+                  <input
+                    className="border-2 border-black bg-transparent p-2 outline-blue-400 dark:border-white"
+                    {...register(value as any)}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <button
+          type="button"
+          className="flex"
+          onClick={() => setIsOptionalOpen((bool) => !bool)}
+        >
+          {isOptionalOpen ? (
+            <div className="flex items-center gap-4">
+              <ChevronUpIcon className="h-5 w-5" />
+              <h1 className="text-sm">Hide Optional Info</h1>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <ChevronDownIcon className="h-5 w-5" />
+              <h1 className="text-sm">Show Optional Info</h1>
+            </div>
+          )}
+        </button>
       </div>
       <button
-        className=" self-end bg-blue-400 px-6 py-3"
+        className=" button_transition self-end bg-blue-400 text-white enabled:hover:bg-blue-500 disabled:bg-blue-200"
         disabled={isPending}
         type="submit"
       >
-        Submit
+        {isPending ? "Loading..." : "Submit"}
       </button>
     </form>
   );
