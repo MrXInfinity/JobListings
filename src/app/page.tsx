@@ -13,9 +13,9 @@ export default async function Home() {
     },
   });
 
-  if (!session) {
-    redirect("/signin");
-  }
+  // if (!session) {
+  //   redirect("/signin");
+  // }
   return (
     <main className=" flex w-full flex-col gap-2 p-4 px-4 dark:bg-zinc-800 dark:text-white">
       <h1>Your List of Jobs</h1>
