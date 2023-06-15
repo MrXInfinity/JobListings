@@ -25,7 +25,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const req = await fetch(
-        `http://localhost:3000/api/jobs?search=${jobSearch}&status=${jobStatus}`
+        `https://job-listings-theta.vercel.app/api/jobs?search=${jobSearch}&status=${jobStatus}`
       );
       const data = await req.json();
       setData(data);
