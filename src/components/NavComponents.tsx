@@ -1,5 +1,6 @@
 "use client";
 
+import useJobList from "@/utils/jobList";
 import useModalState from "@/utils/modalState";
 import useTheme from "@/utils/themeState";
 import {
@@ -9,6 +10,7 @@ import {
   SunIcon,
 } from "@heroicons/react/24/solid";
 import { signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 function NavComponents() {
   const { status } = useSession();
@@ -26,6 +28,7 @@ function NavComponents() {
 }
 
 function Searchbar() {
+  const setJobSearch = useJobList((state) => state.setJobSearch);
   return (
     <div className="hidden items-center gap-4 sm:flex">
       <MagnifyingGlassIcon className="h-5 w-5" />
@@ -33,6 +36,9 @@ function Searchbar() {
         type="text"
         className="bg-transparent"
         placeholder="Search exisiting jobs"
+        onChange={(e) => {
+          setJobSearch(e.target.value);
+        }}
       ></input>
     </div>
   );
@@ -45,7 +51,7 @@ function NewButton() {
   };
   return (
     <div
-      className="button_transition flex cursor-pointer items-center gap-1 border-2 border-black px-2 py-1 hover:border-blue-400 hover:text-blue-400 dark:border-white dark:hover:border-blue-400 "
+      className="button_transition flex cursor-pointer items-center gap-1 rounded-xl border-2 border-black px-2 py-1 hover:border-blue-400 hover:text-blue-400 dark:border-white dark:hover:border-blue-400 "
       onClick={() => newJobClick()}
     >
       <PlusIcon className="h-5 w-5" />
@@ -60,7 +66,7 @@ function ThemeButton() {
 
   return (
     <div
-      className="flex cursor-pointer"
+      className="button_transition flex cursor-pointer rounded-full border-2 border-black p-2  hover:border-blue-400 hover:text-blue-400 dark:border-white dark:hover:border-blue-400"
       onClick={themeToggle}
     >
       {isThemeDark ? (
@@ -74,14 +80,25 @@ function ThemeButton() {
 
 function AccountInfo() {
   const { data, status } = useSession();
+  const [hexCode, setHexCode] = useState("#ffffff");
+  const codes = "0123456789ABCDEF";
+
+  useEffect(() => {
+    let randomHex = "";
+    for (let i = 0; i < 6; i++) {
+      randomHex += codes[Math.floor(Math.random() * codes.length)];
+    }
+    setHexCode(`#${randomHex}`);
+  }, []);
 
   if (status === "authenticated") {
     return (
       <div
-        className="flex"
+        style={{ backgroundColor: hexCode }}
+        className=" flex rounded-full p-2"
         onClick={() => signOut()}
       >
-        Hi, {data?.user?.name?.split(" ")[0][0]}
+        {data?.user?.name?.split(" ")[0][0]}
         {data?.user?.name?.split(" ")[1][0]}
       </div>
     );

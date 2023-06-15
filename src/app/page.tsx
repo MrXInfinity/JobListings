@@ -1,26 +1,72 @@
-import Modal from "@/components/ModalComponent";
-import Card from "@/components/card";
-import { prisma } from "@/db";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import authOptions from "@/utils/authOptions";
+"use client";
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
-  const data = await prisma.job.findMany({
-    where: {
-      authorID: session?.user?.email as string,
+import Card from "@/components/JobCard";
+import Modal from "@/components/Modal/ModalComponent";
+import { statusTypes } from "@/utils/dbActions";
+import useJobList from "@/utils/jobList";
+import optionValues from "@/utils/optionValues";
+import { FunnelIcon } from "@heroicons/react/24/solid";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+
+export default function Home() {
+  const [data, setData] = useState<any[]>([]);
+  const jobSearch = useJobList((state) => state.jobSearch);
+  const jobStatus = useJobList((state) => state.jobStatus);
+  const setJobStatus = useJobList((state) => state.setJobStatus);
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/signin");
     },
   });
 
-  // if (!session) {
-  //   redirect("/signin");
-  // }
-  return (
-    <main className=" flex w-full flex-col gap-2 p-4 px-4 dark:bg-zinc-800 dark:text-white">
-      <h1>Your List of Jobs</h1>
+  useEffect(() => {
+    (async () => {
+      const req = await fetch(
+        `http://localhost:3000/api/jobs?search=${jobSearch}&status=${jobStatus}`
+      );
+      const data = await req.json();
+      setData(data);
+    })();
+  }, [jobSearch, jobStatus]);
 
-      <div className="grid grid-cols-[repeat(auto-fit,_minmax(100px,_1fr))] gap-4">
+  if (status !== "authenticated") {
+    return <></>;
+  }
+
+  return (
+    <main className=" flex w-full flex-col gap-2 p-6 dark:bg-zinc-800 dark:text-white md:p-16">
+      <div className="flex justify-between">
+        <h1>Your List of Jobs</h1>
+        <div className="flex items-center gap-2">
+          <FunnelIcon className="h-4 w-4 " />
+          <select
+            className=" bg-transparent"
+            defaultValue=""
+            onChange={(e) => setJobStatus(e.currentTarget.value as statusTypes)}
+          >
+            <option
+              className="text-black"
+              value=""
+            >
+              All Applications
+            </option>
+            {Object.keys(optionValues).map((value, index) => (
+              <option
+                className="bg-syt"
+                value={value}
+                key={index}
+              >
+                {optionValues[value as keyof typeof optionValues]}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-4">
         {data.map((jobDesc, index) => (
           <Card
             data={jobDesc}
