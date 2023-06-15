@@ -7,15 +7,22 @@ type modalContent = "" | "displayInfo" | "updateInfo" | "addInfo"
 interface ModalState {
     isModalOpen: boolean;
     modalContent: modalContent
-    openModal: (val: modalContent) => void
+    modalID: string
+    openModal: (val: modalContent, id?: string) => void
     closeModal: () => void
 }
 
 const useModalState = create<ModalState>()((set) => ({
     isModalOpen: false,
     modalContent: "",
-    openModal: (val) => set(({ isModalOpen: true, modalContent: val })),
-    closeModal: () => set(({isModalOpen: false, modalContent: ""}))
+    modalID: "",
+    openModal: (val, id) => {
+        set({ isModalOpen: true, modalContent: val, modalID: id })
+    },
+    closeModal: () => {
+
+        set({ modalID: "", isModalOpen: false, modalContent: "" })
+    }
 }))
 
 export default useModalState
