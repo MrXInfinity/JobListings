@@ -25,7 +25,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const req = await fetch(
-        `api/jobs?search=${jobSearch}&status=${jobStatus}`
+        `${process.env.VERCEL_URL}/api/jobs?search=${jobSearch}&status=${jobStatus}`
       );
       const data = await req.json();
       setData(data);

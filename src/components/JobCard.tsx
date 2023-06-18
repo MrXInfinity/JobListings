@@ -7,7 +7,7 @@ import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { Job as JobType } from "@prisma/client";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const momentConfig = {
   sameDay: "[Today]",
@@ -28,6 +28,7 @@ export default function Card({
 }) {
   const toggleModal = useModalState((state) => state.openModal);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const btnRef = useRef(null);
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
@@ -43,6 +44,19 @@ export default function Card({
   const deleteClick = (id: string) => {
     deleteNote(id);
   };
+
+  useEffect(() => {
+    const closeMenu = (e: any) => {
+      if (e.target !== btnRef) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.body.addEventListener("click", closeMenu);
+
+    return () => {
+      document.body.removeEventListener("click", closeMenu);
+    };
+  }, []);
 
   if (Object.keys(data).length <= 0) {
     return <></>;
@@ -66,6 +80,7 @@ export default function Card({
         <div className="relative">
           <div className="absolute right-0 top-0">
             <EllipsisHorizontalIcon
+              ref={btnRef}
               className="button_transition h-6 w-6 p-0 hover:text-blue-400"
               onClick={(e) => {
                 e.stopPropagation();

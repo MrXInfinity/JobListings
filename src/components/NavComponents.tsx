@@ -7,10 +7,12 @@ import {
   MagnifyingGlassIcon,
   MoonIcon,
   PlusIcon,
+  PowerIcon,
   SunIcon,
 } from "@heroicons/react/24/solid";
+import { AnimatePresence, motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function NavComponents() {
   const { status } = useSession();
@@ -81,7 +83,13 @@ function ThemeButton() {
 function AccountInfo() {
   const { data, status } = useSession();
   const [hexCode, setHexCode] = useState("#ffffff");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const btnRef = useRef<HTMLButtonElement>(null);
   const codes = "0123456789ABCDEF";
+
+  const profileClick = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     let randomHex = "";
@@ -91,15 +99,52 @@ function AccountInfo() {
     setHexCode(`#${randomHex}`);
   }, []);
 
+  useEffect(() => {
+    const closeMenu = (e: any) => {
+      if (e.target !== btnRef) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.body.addEventListener("click", closeMenu);
+
+    return () => {
+      document.body.removeEventListener("click", closeMenu);
+    };
+  }, []);
+
   if (status === "authenticated") {
     return (
-      <div
-        style={{ backgroundColor: hexCode }}
-        className=" flex rounded-full p-2"
-        onClick={() => signOut()}
-      >
-        {data?.user?.name?.split(" ")[0][0]}
-        {data?.user?.name?.split(" ")[1][0]}
+      <div className=" flex">
+        <button
+          ref={btnRef}
+          type="button"
+          style={{ backgroundColor: hexCode }}
+          className=" flex rounded-full p-2"
+          onClick={() => profileClick()}
+        >
+          {data?.user?.name?.split(" ")[0][0]}
+          {data?.user?.name?.split(" ")[1][0]}
+        </button>
+        <div className="relative">
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial="hidden"
+                animate="shown"
+                exit="hidden"
+                variants={{
+                  hidden: { opacity: 0, y: -10 },
+                  shown: { opacity: 1, y: 0 },
+                }}
+                className="absolute right-0 top-14 flex cursor-pointer items-center gap-2 bg-white p-2"
+                onClick={() => signOut()}
+              >
+                <PowerIcon className="h-4 w-4" />
+                <h1>logout</h1>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     );
   }
