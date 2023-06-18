@@ -10,6 +10,8 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
+export const runtime = "edge";
+
 export default function Home() {
   const [data, setData] = useState<any[]>([]);
   const jobSearch = useJobList((state) => state.jobSearch);
@@ -25,7 +27,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const req = await fetch(
-        `${process.env.VERCEL_URL}/api/jobs?search=${jobSearch}&status=${jobStatus}`
+        `api/jobs?search=${jobSearch}&status=${jobStatus}`
       );
       const data = await req.json();
       setData(data);
