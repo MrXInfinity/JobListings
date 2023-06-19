@@ -29,8 +29,13 @@ export default function Card({
   const toggleModal = useModalState((state) => state.openModal);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const btnRef = useRef(null);
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
+
+  const openMenu = () => {
+    setIsMenuOpen(true);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   const openModal = (id: string) => {
@@ -47,7 +52,8 @@ export default function Card({
 
   useEffect(() => {
     const closeMenu = (e: any) => {
-      if (e.target !== btnRef) {
+      if (e.target !== btnRef.current) {
+        // console.log(e.target === btnRef.current, btnRef.current);
         setIsMenuOpen(false);
       }
     };
@@ -84,7 +90,7 @@ export default function Card({
               className="button_transition h-6 w-6 p-0 hover:text-blue-400"
               onClick={(e) => {
                 e.stopPropagation();
-                toggleMenu();
+                openMenu();
               }}
             />
             <div className="relative">
@@ -105,8 +111,9 @@ export default function Card({
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
+
                         updateClick(id);
-                        toggleMenu();
+                        closeMenu();
                       }}
                     >
                       Edit
@@ -117,7 +124,7 @@ export default function Card({
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteClick(id);
-                        toggleMenu();
+                        closeMenu();
                       }}
                     >
                       Delete
