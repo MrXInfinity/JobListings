@@ -2,6 +2,8 @@
 
 import Card from "@/components/JobCard";
 import Modal from "@/components/Modal/ModalComponent";
+import { NewButton } from "@/components/Navigation/NavButtons";
+
 import { statusTypes } from "@/utils/dbActions";
 import useJobList from "@/utils/jobList";
 import optionValues from "@/utils/optionValues";
@@ -10,7 +12,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export default function Home() {
   const [data, setData] = useState<any[]>([]);
@@ -27,7 +29,8 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const req = await fetch(
-        `api/jobs?search=${jobSearch}&status=${jobStatus}`
+        `api/jobs?search=${jobSearch}&status=${jobStatus}`,
+        { next: { tags: ["collection"] } }
       );
       const data = await req.json();
       setData(data);
@@ -39,25 +42,25 @@ export default function Home() {
   }
 
   return (
-    <main className=" flex w-full flex-col gap-2 p-6 dark:bg-zinc-800 dark:text-white md:p-16">
-      <div className="flex justify-between">
-        <h1>Your List of Jobs</h1>
+    <main className=" flex w-full flex-col gap-6 p-6 dark:bg-zinc-800 dark:text-white sm:p-10 md:p-12 lg:p-16">
+      <div className="flex items-end justify-between">
+        <h1 className="text-lg">Your List of Jobs</h1>
         <div className="flex items-center gap-2">
           <FunnelIcon className="h-4 w-4 " />
           <select
-            className=" bg-transparent"
+            className=" bg-transparent p-2"
             defaultValue=""
             onChange={(e) => setJobStatus(e.currentTarget.value as statusTypes)}
           >
             <option
-              className="text-black"
+              className="dark:bg-zinc-800 "
               value=""
             >
               All Applications
             </option>
             {Object.keys(optionValues).map((value, index) => (
               <option
-                className="bg-syt"
+                className="dark:bg-zinc-800"
                 value={value}
                 key={index}
               >
@@ -77,6 +80,9 @@ export default function Home() {
         ))}
       </div>
       <Modal />
+      <div className="fixed bottom-4 right-4 flex sm:hidden">
+        <NewButton />
+      </div>
     </main>
   );
 }
