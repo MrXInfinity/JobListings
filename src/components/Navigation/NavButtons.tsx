@@ -11,7 +11,7 @@ export function NewButton() {
   };
   return (
     <div
-      className="button_transition flex cursor-pointer items-center gap-1 rounded-full border-2 border-black p-4 hover:border-blue-400 hover:text-blue-400 dark:border-white dark:hover:border-blue-400 sm:rounded-xl sm:px-2 sm:py-1 "
+      className="button_transition flex cursor-pointer items-center gap-1 rounded-full bg-blue-400 p-4 text-white hover:bg-blue-500 sm:rounded-xl sm:px-3 sm:py-2 "
       onClick={() => newJobClick()}
     >
       <PlusIcon className="h-6 w-6 sm:h-5 sm:w-5" />
@@ -26,13 +26,13 @@ export function ThemeButton() {
 
   return (
     <div
-      className="button_transition flex cursor-pointer rounded-full border-2 border-black p-2  hover:border-blue-400 hover:text-blue-400 dark:border-white dark:hover:border-blue-400"
+      className="button_transition flex cursor-pointer rounded-full p-2  hover:text-blue-400 "
       onClick={themeToggle}
     >
       {isThemeDark ? (
-        <SunIcon className="h-5 w-5" />
+        <SunIcon className="h-5 w-5 sm:h-6 sm:w-6" />
       ) : (
-        <MoonIcon className="h-5 w-5" />
+        <MoonIcon className="h-5 w-5 sm:h-6 sm:w-6" />
       )}
     </div>
   );

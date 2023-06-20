@@ -152,7 +152,7 @@ export default function SetInfoContent() {
               >
                 {Object.keys(optionValues).map((value, index) => (
                   <option
-                    className="text-black"
+                    className="bg-white dark:bg-zinc-900"
                     value={value}
                     key={index}
                   >
@@ -272,7 +272,7 @@ function FormInputGroup({
           </div>
 
           <input
-            className="border-2 border-black bg-transparent p-2 outline-blue-400 dark:border-white"
+            className="border-2 border-black bg-transparent p-2 outline-blue-400 dark:border-white dark:[color-scheme:dark]"
             type={value === "dateOfApplication" ? "date" : "text"}
             required={isRequired !== undefined}
             {...register(value as any, {

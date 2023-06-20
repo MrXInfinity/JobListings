@@ -65,7 +65,7 @@ export function AccountInfo() {
                   hidden: { opacity: 0, y: -10 },
                   shown: { opacity: 1, y: 0 },
                 }}
-                className="absolute right-0 top-14 flex cursor-pointer items-center gap-2 bg-white p-2 dark:text-black"
+                className="absolute right-0 top-14 flex cursor-pointer items-center gap-2 border-2 border-slate-200 bg-white p-2 dark:border-zinc-800 dark:bg-zinc-900"
                 onClick={() => signOut()}
               >
                 <PowerIcon className="h-4 w-4" />

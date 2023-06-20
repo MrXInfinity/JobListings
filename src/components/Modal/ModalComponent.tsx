@@ -40,7 +40,7 @@ export default function Modal() {
           >
             <motion.div
               layout
-              className="relative flex w-full max-w-xl flex-col justify-center gap-3 rounded-3xl bg-white px-8 py-6 dark:bg-zinc-800"
+              className="relative flex w-full max-w-xl flex-col justify-center gap-3 rounded-3xl bg-white px-8 py-6 dark:bg-zinc-900"
               variants={{ shown: { opacity: 1 }, hidden: { opacity: 0 } }}
             >
               <div className=" relative flex">

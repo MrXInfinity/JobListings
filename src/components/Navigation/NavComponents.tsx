@@ -18,7 +18,7 @@ export default function NavComponents({
       <div className="hidden sm:flex">
         <Searchbar />
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 md:gap-6 lg:gap-8">
         {status === "authenticated" && (
           <div className="hidden sm:flex">
             <NewButton />

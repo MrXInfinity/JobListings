@@ -24,7 +24,7 @@ export default async function Home() {
   }
 
   return (
-    <main className=" flex w-full flex-col gap-6 p-6 dark:bg-zinc-800 dark:text-white sm:p-10 md:p-12 lg:p-16">
+    <main className=" flex w-full flex-col gap-6 p-6 dark:bg-zinc-900 dark:text-white sm:p-10 md:p-12 lg:p-16">
       <div className="flex items-end justify-between">
         <h1 className="text-lg">Your List of Jobs</h1>
         <SelectFilter />

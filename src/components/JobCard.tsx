@@ -71,7 +71,7 @@ export default function Card({
 
   return (
     <div
-      className="flex cursor-pointer flex-col gap-5 rounded-3xl border-2 border-slate-200 px-6 py-4 dark:border-slate-100"
+      className="flex cursor-pointer flex-col gap-5 rounded-3xl border-2 border-slate-200 px-6 py-4 dark:border-zinc-800"
       onClick={() => {
         openModal(id);
       }}
@@ -103,7 +103,7 @@ export default function Card({
                       hidden: { opacity: 0, x: 5, y: -5 },
                       shown: { opacity: 1, x: 0, y: 0 },
                     }}
-                    className="absolute right-0 top-0 z-10 flex w-20 flex-col border-2 border-slate-100 bg-white"
+                    className="absolute right-0 top-0 z-10 flex w-20 flex-col border-2 border-slate-100 bg-white dark:border-zinc-800 dark:bg-zinc-900"
                   >
                     <button
                       className="px-3 py-2 text-left"

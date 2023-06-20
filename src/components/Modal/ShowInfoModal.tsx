@@ -129,7 +129,7 @@ function CustomLink({
 
   return (
     <div
-      className="flex items-center gap-3 rounded-2xl bg-slate-200 px-4 py-1"
+      className="flex items-center gap-3 rounded-2xl bg-slate-200 px-4 py-1 dark:bg-zinc-800"
       {...props}
     >
       {children}

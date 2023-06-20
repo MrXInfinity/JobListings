@@ -17,14 +17,14 @@ export default function SelectFilter() {
         onChange={(e) => setJobStatus(e.currentTarget.value as statusTypes)}
       >
         <option
-          className="dark:bg-zinc-800 "
+          className="dark:bg-zinc-900 "
           value=""
         >
           All Applications
         </option>
         {Object.keys(optionValues).map((value, index) => (
           <option
-            className="dark:bg-zinc-800"
+            className="dark:bg-zinc-900"
             value={value}
             key={index}
           >

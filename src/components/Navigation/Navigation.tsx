@@ -40,7 +40,7 @@ export default function Navigation() {
   }, []);
 
   return (
-    <div className="flex bg-slate-200 px-6 py-4 dark:bg-zinc-900 dark:text-white">
+    <div className="flex bg-slate-200 px-6 py-4 dark:bg-zinc-800 dark:text-white">
       <div className="flex w-full">
         <div className="flex w-full sm:hidden">
           {isMobileSearchOpen ? (
@@ -59,7 +59,7 @@ export default function Navigation() {
             </div>
           ) : (
             <NavComponents>
-              <div className="flex cursor-pointer rounded-full border-2 border-black p-2 dark:border-white sm:hidden">
+              <div className="button_transition flex cursor-pointer rounded-full p-2 hover:text-blue-400 sm:hidden">
                 <MagnifyingGlassIcon
                   className="h-5 w-5"
                   onClick={() => openSearchBar()}
