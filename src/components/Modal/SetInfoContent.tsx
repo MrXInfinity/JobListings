@@ -250,6 +250,10 @@ function FormInputGroup({
   const emailRegex =
     /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})?/g;
 
+  if (data.length === 0) {
+    return <></>;
+  }
+
   return (
     <>
       {data.map(([value, label], index) => (

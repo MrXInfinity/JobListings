@@ -24,6 +24,10 @@ export default function JobList({ session }: { session: Session | null }) {
     }
   }, [jobSearch, jobStatus, session]);
 
+  if (data.length === 0) {
+    return <></>;
+  }
+
   return (
     <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] gap-4">
       {data.map((jobDesc, index) => (
