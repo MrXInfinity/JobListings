@@ -11,7 +11,6 @@ export default function JobList({ session }: { session: Session | null }) {
   const jobSearch = useJobList((state) => state.jobSearch);
   const jobStatus = useJobList((state) => state.jobStatus);
 
-  console.log(session, jobSearch, jobStatus);
   useEffect(() => {
     if (session) {
       (async () => {
@@ -25,7 +24,6 @@ export default function JobList({ session }: { session: Session | null }) {
     }
   }, [jobSearch, jobStatus, session]);
 
-  console.log(data);
   if (!data) {
     return <></>;
   }
