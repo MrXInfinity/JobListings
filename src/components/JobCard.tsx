@@ -53,7 +53,6 @@ export default function Card({
   useEffect(() => {
     const closeMenu = (e: any) => {
       if (e.target !== btnRef.current) {
-        // console.log(e.target === btnRef.current, btnRef.current);
         setIsMenuOpen(false);
       }
     };
