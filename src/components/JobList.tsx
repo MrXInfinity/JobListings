@@ -24,7 +24,7 @@ export default function JobList({ session }: { session: Session | null }) {
     }
   }, [jobSearch, jobStatus, session]);
 
-  if (data.length === 0) {
+  if (!data) {
     return <></>;
   }
 
