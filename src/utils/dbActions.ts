@@ -1,9 +1,11 @@
 "use server"
 
 import { prisma } from "@/db";
-import { Job } from "@prisma/client";
+import { Job, Status } from "@prisma/client";
 import moment from "moment";
+import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
+import authOptions from "./authOptions";
 
 export type statusTypes = "APPLYING" |
     "INTERVIEWING" |
@@ -28,12 +30,15 @@ export type FullDescJobType = Omit<
     "authorID" | "updatedAt" | "createdAt"
 >;
 
-export async function getAllNotes(email: string, query?: string) {
+export async function getAllNotes(email: string, query?: string, status?: string) {
     try {
         const data = await prisma.job.findMany({
             where: {
                 authorID: email,
-                OR: [{ title: { startsWith: query } }, { companyName: { startsWith: query } }],
+                AND: {
+                    OR: [{ title: { startsWith: query ?? "" } }, { companyName: { startsWith: query ?? "" } }],
+                    status: status ? status as Status : undefined
+                }
             },
             select: {
                 id: true,
@@ -51,8 +56,11 @@ export async function getAllNotes(email: string, query?: string) {
 
 export async function newNote(data: JobType, name: string, email: string) {
 
+    const { title, status, companyName, dateOfApplication } = data
+
+    if (!title || !status || !companyName || !dateOfApplication) return false
     try {
-        await prisma.job.create({
+        const res = await prisma.job.create({
             data: {
                 ...data,
                 dateOfApplication: moment(data.dateOfApplication).toDate(),
@@ -71,8 +79,11 @@ export async function newNote(data: JobType, name: string, email: string) {
             }
         })
         revalidatePath("/")
+        if (!res) return false
+        return true
     } catch (err) {
         console.log(err)
+        return false
     }
 }
 
@@ -113,8 +124,10 @@ export async function updateNote(data: JobType, id: string) {
             }
         })
         revalidatePath("/")
+        return true
     } catch (err) {
         console.log(err)
+        return false
     }
 }
 

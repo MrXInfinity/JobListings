@@ -22,7 +22,6 @@ export default function Navigation() {
   const setJobSearch = useJobList((state) => state.setJobSearch);
   const jobSearch = useJobList((state) => state.jobSearch);
   const searchRef = useRef<HTMLInputElement>(null);
-  console.log(searchRef);
 
   const openSearchBar = () => {
     setIsMobileSearchOpen(true);
