@@ -250,10 +250,6 @@ function FormInputGroup({
   const emailRegex =
     /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})?/g;
 
-  if (!data) {
-    return <></>;
-  }
-
   return (
     <>
       {data.map(([value, label], index) => (
@@ -272,7 +268,7 @@ function FormInputGroup({
           </div>
 
           <input
-            className="border-2 border-black bg-transparent p-2 outline-blue-400 dark:border-white dark:[color-scheme:dark]"
+            className="w-full border-2 border-black bg-transparent p-2 outline-blue-400 dark:border-white dark:[color-scheme:dark]"
             type={value === "dateOfApplication" ? "date" : "text"}
             required={isRequired !== undefined}
             {...register(value as any, {

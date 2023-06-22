@@ -1,18 +1,11 @@
-import Card from "@/components/JobCard";
 import JobList from "@/components/JobList";
 import Modal from "@/components/Modal/ModalComponent";
 import { NewButton } from "@/components/Navigation/NavButtons";
 import SelectFilter from "@/components/SelectFilter";
 import authOptions from "@/utils/authOptions";
 
-import { getAllNotes, statusTypes } from "@/utils/dbActions";
-import useJobList from "@/utils/jobList";
-import optionValues from "@/utils/optionValues";
-import { FunnelIcon } from "@heroicons/react/24/solid";
 import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
 
 // export const runtime = "edge";
 

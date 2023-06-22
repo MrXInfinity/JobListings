@@ -24,8 +24,12 @@ export default function JobList({ session }: { session: Session | null }) {
     }
   }, [jobSearch, jobStatus, session]);
 
-  if (!data) {
-    return <></>;
+  if (data.length === 0) {
+    return (
+      <div className="w-fit text-sm text-slate-600 dark:text-zinc-400">
+        No Jobs Found...
+      </div>
+    );
   }
 
   return (
